@@ -19,17 +19,18 @@ void drawMarker(float size, const ofColor & color){
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	
 	ofSetWindowTitle("ofxAruco - example");
 	ofSetVerticalSync(true);
 	useVideo = false;
-	string boardName = "boardConfiguration.yml";
+	string boardName = "boardConfiguration-4.yml";
 
 	if (useVideo) {
 		player.load("videoboard.mp4");
 		player.play();
 		video = &player;
 	} else {
-		grabber.setDeviceID(1);
+		grabber.setDeviceID(0);
 		grabber.initGrabber(640, 480);
 		video = &grabber;
 	}
@@ -42,6 +43,8 @@ void ofApp::setup(){
 	showMarkers = true;
 	showBoard = true;
 	showBoardImage = false;
+
+	projection.loadImage ( "projection.jpg" );
 
 	ofEnableAlphaBlending();
 
@@ -66,18 +69,34 @@ void ofApp::draw(){
 		for (int i = 0; i<aruco.getNumMarkers(); i++) {
 			aruco.begin(i);
 			drawMarker(0.15, ofColor::white);
+			ofDrawBitmapString ("djasukdhaskd", 0,0 );
 			aruco.end();
 		}
 	}
 
+	if ( aruco.getBoardProbability () > 0.03 ) {
+		for ( int i = 0; i < aruco.getNumBoards (); i++ ) {
+			aruco.beginBoard ( i );
+			if ( showBoard ) {
+				drawMarker ( .5, ofColor::red );
+				ofDrawBitmapString ( "DUHSKDUhkuhs", 0, 0 );
+			}
 
-	if (showBoard && aruco.getBoardProbability()>0.03) {
-		for (int i = 0; i<aruco.getNumBoards(); i++) {
-			aruco.beginBoard(i);
-			drawMarker(.5, ofColor::red);
-			aruco.end();
+			ofMatrix4x4 matrix = aruco.getProjectionMatrix ();
+			ofVec3f translation = matrix.getTranslation ();
+			ofVec3f scale = matrix.getScale ();
+
+			ofPushMatrix ();
+			ofTranslate ( translation );
+			ofScale ( scale );
+			ofSetColor ( 255 );
+			projection.draw ( 0, 0 );
+			ofPopMatrix ();
+
+			aruco.end ();
 		}
 	}
+
 
 
 	ofSetColor(255);

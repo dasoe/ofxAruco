@@ -42,7 +42,7 @@ public:
 			std::vector< int > transitionsIndexes(_nTransitions);
 			for (int i = 0; i < _nTransitions; i++)
 				transitionsIndexes[i] = i;
-			std::random_shuffle(transitionsIndexes.begin(), transitionsIndexes.end());
+			std::shuffle (transitionsIndexes.begin(), transitionsIndexes.end(), std::default_random_engine ( 0 ) );
 
 			std::vector< int > selectedIndexes;
 			for (int k = 0; k < currentNTransitions; k++)

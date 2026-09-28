@@ -1,5 +1,14 @@
 *.DS_* 
+.vs/
+*/.vs/
 example/bin/example*
 example/obj
+example/bin
 example/bin/libs
 example/*.creator*
+exampleHighlyReliableMarkers/bin/example*
+exampleHighlyReliableMarkers/obj
+exampleHighlyReliableMarkers/bin
+exampleHighlyReliableMarkers/bin/libs
+exampleHighlyReliableMarkers/*.creator*
+createMarkerDictionary/

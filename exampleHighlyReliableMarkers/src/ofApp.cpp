@@ -2,7 +2,7 @@
 #include "ofxCv.h"
 #include "ofBitmapFont.h"
 
-void drawMarker(float size, const ofColor & color){
+void drawMarker(float size, const ofColor & color, int id, string name){
 	ofDrawAxis(size);
 	ofPushMatrix();
 		// move up from the center by size*.5
@@ -14,6 +14,7 @@ void drawMarker(float size, const ofColor & color){
 		ofNoFill();
 		ofSetColor(color);
 		ofDrawBox(size);
+		ofDrawBitmapString ( ofToString( id ), 20, 20);
 	ofPopMatrix();
 }
 
@@ -28,7 +29,7 @@ void ofApp::setup(){
 
 	//setup video
 	grabber.listDevices();
-	grabber.setDeviceID(1);
+	grabber.setDeviceID(0);
 	grabber.initGrabber(1920,1080);
 	video = &grabber;
 	
@@ -36,6 +37,7 @@ void ofApp::setup(){
 	//load marker
 	aruco.setUseHighlyReliableMarker(markerFile);
 	
+	aruco.setMinMaxMarkerDetectionSize (0.01, 0.2);
 	//init 
 	aruco.setThreaded(true);
 	aruco.setupXML(cameraIntrinsics, video->getWidth(), video->getHeight());
@@ -59,9 +61,16 @@ void ofApp::draw(){
 	video->draw(0,0);
 
 	if(showMarkers){
+		vector <aruco::Marker> markerrs= aruco.getMarkers ();
+
+
+
 		for(int i=0;i<aruco.getNumMarkers();i++){
-			aruco.begin(i);
-			drawMarker(0.15,ofColor::white);
+			ofLogNotice ( "number: " + ofToString ( markerrs[ i ].id ) );
+
+			aruco.begin(i);			
+			ofLogNotice ( "id: " + markerrs[ i ].id );
+			drawMarker(0.15 ,ofColor::white, markerrs[ i ].id, aruco.getThreadName () );
 			aruco.end();
 		}
 	}

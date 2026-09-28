@@ -32,4 +32,6 @@ class ofApp : public ofBaseApp{
 		bool showBoardImage;
 		ofImage board;
 		ofImage marker;
+
+		ofImage projection;
 };

@@ -203,6 +203,8 @@ void CameraParameters::readFromXMLFile(string filePath) throw(cv::Exception) {
     fs["distortion_coefficients"] >> MDist;
     fs["camera_matrix"] >> MCamera;
 
+    cout << "----------" << w << " | " << h;
+
     if (MCamera.cols == 0 || MCamera.rows == 0)
         throw cv::Exception(9007, "File :" + filePath + " does not contains valid camera matrix", "CameraParameters::readFromXML", __FILE__, __LINE__);
     if (w == -1 || h == 0)
